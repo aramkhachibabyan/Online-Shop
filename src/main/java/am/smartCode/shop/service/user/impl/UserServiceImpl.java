@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     public void login(String email, String password) throws SQLException {
         registerValidation(email, password);
         User user = userRepository.get(email);
-        if (user.equals(null)) {
+        if (user == null) {
             throw new RuntimeException("No such user please register first! ");
         }
         System.out.println(user.getName() + " Login successfully");
@@ -60,8 +60,8 @@ public class UserServiceImpl implements UserService {
         if (password == null || password.isEmpty()) {
             throw new RuntimeException("Password must not be blank");
         }
-        if (password.length() >= 8) {
-            throw new RuntimeException("Password must be less then 8 symbols");
+        if (password.length() <= 8) {
+            throw new RuntimeException("Password can not be less then 8 symbols");
         }
         if (!Pattern.compile("^(.+)@(\\S+)$").matcher(email).matches()) {
             throw new RuntimeException("Invalid email");
