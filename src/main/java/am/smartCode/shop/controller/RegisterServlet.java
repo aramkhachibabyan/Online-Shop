@@ -33,7 +33,7 @@ public class RegisterServlet extends HttpServlet {
         } catch (SQLException e) {
             resp.sendRedirect("register.html");
         }
-        resp.sendRedirect("/");
+        resp.sendRedirect("/login");
 
     }
 }

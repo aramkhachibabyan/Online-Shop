@@ -47,7 +47,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProduct(long id) throws SQLException {
         Connection connection = productRepository.getConnection();
-        connection.setReadOnly(true);
         if (id <= 0) {
             throw new RuntimeException("Inserted ID must be > 0");
         }

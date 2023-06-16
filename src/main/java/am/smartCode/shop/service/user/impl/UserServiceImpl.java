@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         if (password == null || password.isEmpty()) {
             throw new RuntimeException("Password must not be blank");
         }
-        if (password.length() <= 8) {
+        if (password.length() < 8) {
             throw new RuntimeException("Password can not be less then 8 symbols");
         }
         if (!Pattern.compile("^(.+)@(\\S+)$").matcher(email).matches()) {

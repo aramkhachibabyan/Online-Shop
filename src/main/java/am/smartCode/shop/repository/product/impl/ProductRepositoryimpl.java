@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductRepositoryimpl implements ProductRepository {
     private final Connection connection;
 
-    public ProductRepositoryimpl(DatabaseConnection databaseConnection) throws SQLException {
+    public ProductRepositoryimpl(DatabaseConnection databaseConnection)  {
         this.connection = databaseConnection.getConnection();
         try {
             this.connection.createStatement().executeUpdate(
@@ -67,11 +67,12 @@ public class ProductRepositoryimpl implements ProductRepository {
         preparedStatement.setString(3, product.getPublishedDate());
         preparedStatement.setLong(4, product.getPrice());
         preparedStatement.setLong(5, product.getId());
+        preparedStatement.executeUpdate();
         preparedStatement.close();
     }
 
     @Override
-    public Product get(Long id) throws SQLException {
+    public Product get(long id) throws SQLException {
         Product product = new Product();
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from products WHERE id = ?");
         preparedStatement.setLong(1, id);

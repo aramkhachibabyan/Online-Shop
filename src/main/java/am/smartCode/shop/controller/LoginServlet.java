@@ -23,8 +23,8 @@ public class LoginServlet extends HttpServlet {
         UserRepository userRepository = new UserRepositoryImpl(databaseConnection);
         UserService userService = new UserServiceImpl(userRepository);
         try {
-            userService.login(email,password);
-            resp.sendRedirect("home.html");
+            userService.login(email, password);
+            resp.sendRedirect("index.html");
         } catch (Exception e) {
             resp.getWriter().write("<!DOCTYPE html>\n" +
                     "<html lang=\"en\">\n" +
@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
                     "</head>\n" +
                     "<body>\n" +
                     "\n" +
-                    "    <h2>Wrong username or password</h2>\n" +
+                    "    <h2>Wrong email or password</h2>\n" +
                     "    <form method=\"post\" action=\"/login\">        \n" +
                     "            email: <input type=\"text\" name=\"email\"/><br><br>\n" +
                     "            password: <input type=\"password\" name=\"password\"/><br><br>\n" +
@@ -43,8 +43,6 @@ public class LoginServlet extends HttpServlet {
                     "</body>\n" +
                     "</html>");
         }
-
-
 
 
     }

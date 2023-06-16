@@ -14,7 +14,7 @@ public interface ProductRepository {
 
     void update(Product product) throws SQLException;
 
-    Product get(Long id) throws SQLException;
+    Product get(long id) throws SQLException;
 
     List<Product> getAll() throws SQLException;
 

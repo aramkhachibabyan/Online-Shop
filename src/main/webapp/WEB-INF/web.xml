@@ -35,5 +35,43 @@
     <url-pattern>/login</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>createProductServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.createProductServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>createProductServlet</servlet-name>
+    <url-pattern>/createProduct</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>updateProductServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.updateProductServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>updateProductServlet</servlet-name>
+    <url-pattern>/updateProduct</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>deleteProductServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.deleteProductServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deleteProductServlet</servlet-name>
+    <url-pattern>/deleteProduct</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>getProductServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.getProductServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>getProductServlet</servlet-name>
+    <url-pattern>/getProduct</url-pattern>
+  </servlet-mapping>
+
+
+
 
 </web-app>
