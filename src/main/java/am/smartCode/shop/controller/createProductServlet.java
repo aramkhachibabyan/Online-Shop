@@ -16,20 +16,26 @@ import java.sql.SQLException;
 public class createProductServlet extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String category = req.getParameter("category");
-        String name = req.getParameter("name");
-        String publishedYear = req.getParameter("publishedYear");
-        String pricestr = req.getParameter("price");
-        long price = Long.parseLong(pricestr);
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        ProductRepository productRepository = new ProductRepositoryimpl(databaseConnection);
-        ProductService productService = new ProductServiceImpl(productRepository);
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         try {
-            productService.createProduct(category,name,publishedYear,price);
-            resp.sendRedirect("/product.html");
+            String category = req.getParameter("category");
+            String name = req.getParameter("name");
+            String publishedYear = req.getParameter("publishedYear");
+            String pricestr = req.getParameter("price");
+            long price=0;
+            try {
+                price = Long.parseLong(pricestr);
+            } catch (Exception ignored) {
+            }
+            ProductService productService = new ProductServiceImpl(new ProductRepositoryimpl(DatabaseConnection.getInstance()));
+
+            productService.createProduct(category, name, publishedYear, price);
+            req.setAttribute("name", name);
+            req.getRequestDispatcher("/createProduct.jsp").forward(req, resp);
         } catch (Exception e) {
-            resp.sendRedirect("/createProduct");
+            req.setAttribute("message", e.getMessage());
+            req.getRequestDispatcher("/createProduct.jsp").forward(req, resp);
+
         }
     }
 }

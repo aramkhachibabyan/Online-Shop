@@ -79,10 +79,11 @@ public class ProductRepositoryimpl implements ProductRepository {
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             setProductFields(product, resultSet);
+            return product;
         }
         resultSet.close();
         preparedStatement.close();
-        return product;
+        return null;
     }
 
     @Override

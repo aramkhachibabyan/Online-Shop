@@ -16,15 +16,19 @@ public class deleteProductServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idstr = req.getParameter("id");
-        long id = Long.parseLong(idstr);
-        DatabaseConnection databaseConnection  = DatabaseConnection.getInstance();
-        ProductRepository productRepository = new ProductRepositoryimpl(databaseConnection);
-        ProductService productService = new ProductServiceImpl(productRepository);
+        long id=0;
+        try {
+            id = Long.parseLong(idstr);
+        } catch (Exception ignored) {
+        }
+        ProductService productService = new ProductServiceImpl(new ProductRepositoryimpl(DatabaseConnection.getInstance()));
         try {
             productService.deleteProduct(id);
-            resp.sendRedirect("/product.html");
+            req.setAttribute("id",id);
+            req.getRequestDispatcher("/deleteProduct.jsp").forward(req,resp);
         } catch (Exception e) {
-            resp.sendRedirect("/deleteProduct");
+            req.setAttribute("message",e.getMessage());
+            req.getRequestDispatcher("/deleteProduct.jsp").forward(req,resp);
         }
     }
 }

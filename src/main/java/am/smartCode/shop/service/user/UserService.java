@@ -8,4 +8,7 @@ public interface UserService {
 
     void login(String email, String password) throws SQLException;
 
+    void deleteUser(String email,String password) throws SQLException;
+    void updateUser(String email,String newPassword, String repeatPassword) throws SQLException;
+
 }

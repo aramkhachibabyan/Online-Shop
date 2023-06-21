@@ -1,9 +1,12 @@
 package am.smartCode.shop.service.product.impl;
 
 import am.smartCode.shop.*;
+import am.smartCode.shop.exceptions.ProductNotFoundException;
+import am.smartCode.shop.exceptions.ProductValidationException;
 import am.smartCode.shop.model.Product;
 import am.smartCode.shop.repository.product.ProductRepository;
 import am.smartCode.shop.service.product.ProductService;
+import am.smartCode.shop.util.constants.Message;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -31,14 +34,19 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(Product product) throws SQLException {
+        if (product.getId() <= 0) {
+            throw new ProductValidationException(Message.INVALID_ID);
+        }
+        if (productRepository.get(product.getId()) == null) {
+            throw new ProductNotFoundException(Message.PRODUCT_NOT_FOUND);
+        }
+        productValidation(product.getCategory(), product.getName(), product.getPublishedDate(), product.getPrice());
         Connection connection = productRepository.getConnection();
         connection.setAutoCommit(false);
         try {
-            productValidation(product.getCategory(), product.getName(), product.getPublishedDate(), product.getPrice());
             productRepository.update(product);
             connection.commit();
-            System.out.println("Product is updated");
-        } catch (Throwable e) {
+        } catch (Exception e) {
             connection.rollback();
             connection.setAutoCommit(true);
         }
@@ -48,7 +56,10 @@ public class ProductServiceImpl implements ProductService {
     public Product getProduct(long id) throws SQLException {
         Connection connection = productRepository.getConnection();
         if (id <= 0) {
-            throw new RuntimeException("Inserted ID must be > 0");
+            throw new ProductValidationException(Message.INVALID_ID);
+        }
+        if (productRepository.get(id) == null) {
+            throw new ProductNotFoundException(Message.PRODUCT_NOT_FOUND);
         }
         return productRepository.get(id);
     }
@@ -57,14 +68,16 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(long id) throws SQLException {
         Connection connection = productRepository.getConnection();
         connection.setAutoCommit(false);
+        if (id <= 0) {
+            throw new ProductValidationException(Message.INVALID_ID);
+        }
+        if (productRepository.get(id) == null){
+            throw new ProductNotFoundException(Message.PRODUCT_NOT_FOUND);
+        }
         try {
-            if (id <= 0) {
-                throw new RuntimeException("Inserted ID must be > 0");
-            }
             productRepository.delete(id);
             connection.commit();
-            System.out.println("Product is deleted");
-        } catch (Throwable e) {
+        } catch (Exception e) {
             connection.rollback();
             connection.setAutoCommit(false);
         }
@@ -73,7 +86,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() throws SQLException {
         Connection connection = productRepository.getConnection();
-        connection.setReadOnly(true);
         return productRepository.getAll();
     }
 
@@ -85,17 +97,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private static void productValidation(String category, String name, String publishedDate, long price) {
-        if (category.equals(null) || category.equals("")) {
-            throw new RuntimeException("Please enter product category");
+        if (category == null || category.isEmpty()) {
+            throw new ProductValidationException(Message.BLANK_PRODUCT_CATEGORY);
         }
-        if (name.equals(null) || name.equals("")) {
-            throw new RuntimeException("Please enter product name");
+        if (name == null || name.isEmpty()) {
+            throw new ProductValidationException(Message.BLANK_PRODUCT_NAME);
         }
         if (!Pattern.compile("^(3[01]|[12][0-9]|0[1-9])/(1[0-2]|0[1-9])/[0-9]{4}$").matcher(publishedDate).matches()) {
-            throw new RuntimeException("Please enter valid published year ");
+            throw new ProductValidationException(Message.INVALID_DATE_FORMAT);
         }
         if (price <= 0) {
-            throw new RuntimeException("Please enter price of product");
+            throw new ProductValidationException(Message.INVALID_PRICE);
         }
     }
 }

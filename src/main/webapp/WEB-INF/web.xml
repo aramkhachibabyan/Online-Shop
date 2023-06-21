@@ -36,6 +36,33 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>deleteAccauntServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.DeleteAccauntServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>deleteAccauntServlet</servlet-name>
+    <url-pattern>/deleteAccaunt</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>changePasswordServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.ChangePasswordServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>changePasswordServlet</servlet-name>
+    <url-pattern>/changePassword</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>productListServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.productListServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>productListServlet</servlet-name>
+    <url-pattern>/productList</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>createProductServlet</servlet-name>
     <servlet-class>am.smartCode.shop.controller.createProductServlet</servlet-class>
   </servlet>

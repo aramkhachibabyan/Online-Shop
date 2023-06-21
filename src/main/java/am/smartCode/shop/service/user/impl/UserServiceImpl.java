@@ -1,12 +1,16 @@
 package am.smartCode.shop.service.user.impl;
 
 import am.smartCode.shop.*;
+import am.smartCode.shop.exceptions.UserNotFoundException;
+import am.smartCode.shop.exceptions.ValidationException;
 import am.smartCode.shop.model.User;
 import am.smartCode.shop.repository.user.UserRepository;
 import am.smartCode.shop.service.user.UserService;
+import am.smartCode.shop.util.constants.Message;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class UserServiceImpl implements UserService {
@@ -23,7 +27,7 @@ public class UserServiceImpl implements UserService {
         Connection connection = userRepository.getConnection();
         connection.setAutoCommit(false);
         try {
-            registerValidation(email, password);
+            Validation(email, password, age);
             User user = new User();
             user.setName(name);
             user.setLastname(lastname);
@@ -34,10 +38,10 @@ public class UserServiceImpl implements UserService {
             userRepository.create(user);
             connection.commit();
             System.out.println(email + " registration successfully");
-        } catch (Throwable e) {
+        } catch (Exception e) {
             connection.rollback();
             connection.setAutoCommit(true);
-            System.out.println("Registration failed !");
+            throw new RuntimeException(Message.REGISTRATION_FAILED + ", " + e.getMessage());
         }
 
 
@@ -45,26 +49,78 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void login(String email, String password) throws SQLException {
-        registerValidation(email, password);
+        Validation(email, password);
         User user = userRepository.get(email);
         if (user == null) {
-            throw new RuntimeException("No such user please register first! ");
+            throw new UserNotFoundException(Message.USER_NOT_FOUND);
         }
-        System.out.println(user.getName() + " Login successfully");
+        if(!Objects.equals(user.getPassword(), password)){
+            throw new ValidationException(Message.INVALID_PASSWORD);
+        }
     }
 
-    private void registerValidation(String email, String password) {
-        if (email == null || email.isEmpty()) {
-            throw new RuntimeException("Email must not be blank");
+    @Override
+    public void deleteUser(String email,String password) throws SQLException {
+        Validation(email, password);
+        Connection connection = userRepository.getConnection();
+        if (!userRepository.get(email).getPassword().equals(password)){
+            throw new ValidationException(Message.INVALID_PASSWORD);
         }
-        if (password == null || password.isEmpty()) {
-            throw new RuntimeException("Password must not be blank");
-        }
-        if (password.length() < 8) {
-            throw new RuntimeException("Password can not be less then 8 symbols");
-        }
-        if (!Pattern.compile("^(.+)@(\\S+)$").matcher(email).matches()) {
-            throw new RuntimeException("Invalid email");
+        connection.setAutoCommit(false);
+        try {
+            userRepository.delete(email);
+            connection.commit();
+        } catch (Exception e) {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            throw new RuntimeException("Deleting Failes" + ", " + e.getMessage());
         }
     }
+
+    @Override
+    public void updateUser(String email, String newPassword, String repeatPassword) throws SQLException {
+        if (email == null || email.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+        if (!Objects.equals(newPassword, repeatPassword)) {
+            throw new RuntimeException("Passwords does not match");
+        }
+        if (newPassword == null || newPassword.isEmpty() || repeatPassword == null || repeatPassword.isEmpty()){
+            throw new ValidationException(Message.BLANK_PASSWORD);
+        }
+            Connection connection = userRepository.getConnection();
+        connection.setAutoCommit(false);
+        try {
+            userRepository.updateByEmail(email, newPassword);
+            connection.commit();
+        } catch (Exception e) {
+            connection.rollback();
+            connection.setAutoCommit(true);
+            throw new RuntimeException("Changing password failed" + ", " + e.getMessage());
+        }
+    }
+
+
+    private void Validation(String email, String password) {
+        if (email == null || email.isEmpty()) {
+            throw new ValidationException(Message.BLANK_EMAIL);
+        }
+        if (password == null || password.isEmpty()) {
+            throw new ValidationException(Message.BLANK_PASSWORD);
+        }
+        if (password.length() < 8) {
+            throw new ValidationException(Message.INVALID_LENGTH_OF_PASSWORD);
+        }
+        if (!Pattern.compile("^(.+)@(\\S+)$").matcher(email).matches()) {
+            throw new ValidationException(Message.INVALID_EMAIL);
+        }
+    }
+
+    private void Validation(String email, String password, int age) {
+        Validation(email, password);
+        if (age <= 0) {
+            throw new ValidationException(Message.INVALID_AGE);
+        }
+    }
+
 }

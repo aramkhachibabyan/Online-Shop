@@ -16,32 +16,33 @@ import java.sql.SQLException;
 
 public class LoginServlet extends HttpServlet {
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-        UserRepository userRepository = new UserRepositoryImpl(databaseConnection);
-        UserService userService = new UserServiceImpl(userRepository);
+        UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
         try {
             userService.login(email, password);
-            resp.sendRedirect("index.html");
+            req.setAttribute("email", email);
+            req.getRequestDispatcher("/index.jsp").forward(req, resp);
         } catch (Exception e) {
-            resp.getWriter().write("<!DOCTYPE html>\n" +
-                    "<html lang=\"en\">\n" +
-                    "<head>\n" +
-                    "    <meta charset=\"UTF-8\">\n" +
-                    "    <title>Login Page</title>\n" +
-                    "</head>\n" +
-                    "<body>\n" +
-                    "\n" +
-                    "    <h2>Wrong email or password</h2>\n" +
-                    "    <form method=\"post\" action=\"/login\">        \n" +
-                    "            email: <input type=\"text\" name=\"email\"/><br><br>\n" +
-                    "            password: <input type=\"password\" name=\"password\"/><br><br>\n" +
-                    "            <input type=\"submit\"/>\n" +
-                    "    </form>\n" +
-                    "</body>\n" +
-                    "</html>");
+            req.setAttribute("message", e.getMessage());
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+//            resp.getWriter().write("<!DOCTYPE html>\n" +
+//                    "<html lang=\"en\">\n" +
+//                    "<head>\n" +
+//                    "    <meta charset=\"UTF-8\">\n" +
+//                    "    <title>Login Page</title>\n" +
+//                    "</head>\n" +
+//                    "<body>\n" +
+//                    "\n" +
+//                    "    <h2>Wrong email or password</h2>\n" +
+//                    "    <form method=\"post\" action=\"/login\">        \n" +
+//                    "            email: <input type=\"text\" name=\"email\"/><br><br>\n" +
+//                    "            password: <input type=\"password\" name=\"password\"/><br><br>\n" +
+//                    "            <input type=\"submit\"/>\n" +
+//                    "    </form>\n" +
+//                    "</body>\n" +
+//                    "</html>");
         }
 
 

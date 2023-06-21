@@ -51,7 +51,6 @@ public class UserRepositoryImpl implements UserRepository {
         preparedStatement.setLong(6, user.getBalance());
 
         preparedStatement.executeUpdate();
-
         preparedStatement.close();
     }
 
@@ -94,10 +93,11 @@ public class UserRepositoryImpl implements UserRepository {
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             setUserFields(user, resultSet);
+            resultSet.close();
+            preparedStatement.close();
+            return user;
         }
-        resultSet.close();
-        preparedStatement.close();
-        return user;
+        return null;
     }
 
     @Override
@@ -123,19 +123,30 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void delete(Long id) throws SQLException {
+    public void delete(String email) throws SQLException {
 
-        PreparedStatement preparedStatement = connection.prepareStatement("DELETE from users WHERE id = ?");
-        preparedStatement.setLong(1, id);
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE from users WHERE username = ?");
+        preparedStatement.setString(1, email);
 
         preparedStatement.executeUpdate();
-
         preparedStatement.close();
     }
 
     @Override
     public Connection getConnection() {
         return connection;
+    }
+
+    @Override
+    public void updateByEmail(String email,String password) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(
+                "UPDATE users SET password = ? WHERE username = ?"
+        );
+
+        preparedStatement.setString(1,password);
+        preparedStatement.setString(2,email);
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
     }
 
     private void setUserFields(User user, ResultSet resultSet) throws SQLException {

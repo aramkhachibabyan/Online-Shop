@@ -6,6 +6,7 @@ import am.smartCode.shop.model.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.StringJoiner;
 
 public interface UserRepository {
 
@@ -20,7 +21,10 @@ public interface UserRepository {
 
     List<User> findUsersByName(String name) throws SQLException;
 
-    void delete(Long id) throws SQLException;
+    void delete(String email) throws SQLException;
 
     Connection getConnection();
+
+    void updateByEmail(String email, String password)throws SQLException;
+
 }
