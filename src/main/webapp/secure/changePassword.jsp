@@ -11,15 +11,15 @@
     <title>Change Password</title>
 </head>
 <body>
-
+<a style="display: flex;justify-content: right" href="http://localhost:8080/secure/logout">Log out</a><br><br>
 <%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
 
-<form method="post" action="/changePassword">
-  <input type="hidden" name="email" value="<%=request.getParameter("email")%>"/><br><br>
+<form method="post" action="/secure/changePassword">
   New password: <input type="password" name="newPassword"/><br><br>
   Repeat password: <input type="password" name="repeatPassword"/><br><br>
-  <input type="submit"/>
+  <input type="submit"/><br><br>
 </form>
+<a href="http://localhost:8080/secure/home.jsp">Home Page</a><br><br>
 
 
 </body>

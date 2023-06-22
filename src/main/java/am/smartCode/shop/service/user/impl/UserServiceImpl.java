@@ -26,9 +26,12 @@ public class UserServiceImpl implements UserService {
 
         Connection connection = userRepository.getConnection();
         connection.setAutoCommit(false);
-        try {
-            Validation(email, password, age);
-            User user = new User();
+
+            Validation(email, password, age, balance);
+            if (userRepository.get(email) != null){
+              throw new ValidationException(Message.EMAIL_IS_NOT_AVAILABLE);
+            }
+        try {  User user = new User();
             user.setName(name);
             user.setLastname(lastname);
             user.setEmail(email);
@@ -54,16 +57,16 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserNotFoundException(Message.USER_NOT_FOUND);
         }
-        if(!Objects.equals(user.getPassword(), password)){
+        if (!Objects.equals(user.getPassword(), password)) {
             throw new ValidationException(Message.INVALID_PASSWORD);
         }
     }
 
     @Override
-    public void deleteUser(String email,String password) throws SQLException {
+    public void deleteUser(String email, String password) throws SQLException {
         Validation(email, password);
         Connection connection = userRepository.getConnection();
-        if (!userRepository.get(email).getPassword().equals(password)){
+        if (!userRepository.get(email).getPassword().equals(password)) {
             throw new ValidationException(Message.INVALID_PASSWORD);
         }
         connection.setAutoCommit(false);
@@ -85,10 +88,10 @@ public class UserServiceImpl implements UserService {
         if (!Objects.equals(newPassword, repeatPassword)) {
             throw new RuntimeException("Passwords does not match");
         }
-        if (newPassword == null || newPassword.isEmpty() || repeatPassword == null || repeatPassword.isEmpty()){
+        if (newPassword == null || newPassword.isEmpty() || repeatPassword == null || repeatPassword.isEmpty()) {
             throw new ValidationException(Message.BLANK_PASSWORD);
         }
-            Connection connection = userRepository.getConnection();
+        Connection connection = userRepository.getConnection();
         connection.setAutoCommit(false);
         try {
             userRepository.updateByEmail(email, newPassword);
@@ -116,11 +119,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void Validation(String email, String password, int age) {
+    private void Validation(String email, String password, int age, long balance) {
         Validation(email, password);
         if (age <= 0) {
             throw new ValidationException(Message.INVALID_AGE);
         }
+        if (balance < 0) {
+            throw new ValidationException(Message.INVALID_BALANCE);
+        }
+
+
     }
 
 }

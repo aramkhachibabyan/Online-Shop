@@ -5,6 +5,7 @@ import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,10 +26,10 @@ public class deleteProductServlet extends HttpServlet {
         try {
             productService.deleteProduct(id);
             req.setAttribute("id",id);
-            req.getRequestDispatcher("/deleteProduct.jsp").forward(req,resp);
+            req.getRequestDispatcher(Path.DELETE_PRODUCT).forward(req,resp);
         } catch (Exception e) {
             req.setAttribute("message",e.getMessage());
-            req.getRequestDispatcher("/deleteProduct.jsp").forward(req,resp);
+            req.getRequestDispatcher(Path.DELETE_PRODUCT).forward(req,resp);
         }
     }
 }

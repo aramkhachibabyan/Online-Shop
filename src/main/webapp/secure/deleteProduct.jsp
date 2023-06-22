@@ -13,15 +13,16 @@
     <title>Delete Product</title>
 </head>
 <body>
+<a style="display: flex;justify-content: right" href="http://localhost:8080/secure/logout">Log out</a><br><br>
 <%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
 <%= request.getAttribute("id") == null ? "" : "Product with id " + request.getAttribute("id") + " deleted"%>
 
-<form method="post" action="/deleteProduct">
+<form method="post" action="/secure/deleteProduct">
 
     id: <input type="number" name="id"/><br><br>
     <input type="submit"/><br><br>
 
-    <a href="http://localhost:8080/product.jsp">Product Page</a><br><br>
+    <a href="http://localhost:8080//secure/product.jsp">Product Page</a><br><br>
 
 </form>
 

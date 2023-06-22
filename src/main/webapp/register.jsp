@@ -10,7 +10,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Register Page</title>
+  <title>Register</title>
 </head>
 <body>
 <%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
@@ -19,12 +19,12 @@
 <h1>Please enter your information</h1>
 
 <form method="post" action="/register">
-  name: <input type="text" name="name"/><br><br>
-  lastname: <input type="text" name="lastname"/><br><br>
-  email: <input type="text" name="email"/><br><br>
-  password: <input type="password" name="password"/><br><br>
-  age: <input type="number" name="age"/><br><br>
-  balance: <input type="number" name="balance"/><br><br>
+  Name: <input type="text" name="name"/><br><br>
+  Lastname: <input type="text" name="lastname"/><br><br>
+  Email: <input type="text" name="email"/><br><br>
+  Password: <input type="password" name="password"/><br><br>
+  Age: <input type="number" name="age"/><br><br>
+  Balance: <input type="number" name="balance"/><br><br>
   <input type="submit"/>
 
 </form>

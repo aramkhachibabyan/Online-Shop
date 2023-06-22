@@ -5,11 +5,13 @@ import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -22,27 +24,12 @@ public class LoginServlet extends HttpServlet {
         UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
         try {
             userService.login(email, password);
-            req.setAttribute("email", email);
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+            HttpSession session = req.getSession();
+            session.setAttribute("email", email);
+            req.getRequestDispatcher(Path.HOME_PAGE).forward(req, resp);
         } catch (Exception e) {
             req.setAttribute("message", e.getMessage());
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
-//            resp.getWriter().write("<!DOCTYPE html>\n" +
-//                    "<html lang=\"en\">\n" +
-//                    "<head>\n" +
-//                    "    <meta charset=\"UTF-8\">\n" +
-//                    "    <title>Login Page</title>\n" +
-//                    "</head>\n" +
-//                    "<body>\n" +
-//                    "\n" +
-//                    "    <h2>Wrong email or password</h2>\n" +
-//                    "    <form method=\"post\" action=\"/login\">        \n" +
-//                    "            email: <input type=\"text\" name=\"email\"/><br><br>\n" +
-//                    "            password: <input type=\"password\" name=\"password\"/><br><br>\n" +
-//                    "            <input type=\"submit\"/>\n" +
-//                    "    </form>\n" +
-//                    "</body>\n" +
-//                    "</html>");
+            req.getRequestDispatcher(Path.LOGIN).forward(req, resp);
         }
 
 

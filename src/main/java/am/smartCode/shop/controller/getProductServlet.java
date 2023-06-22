@@ -6,6 +6,7 @@ import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,10 +28,10 @@ public class getProductServlet extends HttpServlet {
         try {
             Product product = productService.getProduct(id);
             req.setAttribute("product",product);
-            req.getRequestDispatcher("/getProductTable.jsp").forward(req,resp);
+            req.getRequestDispatcher(Path.GET_PRODUCT).forward(req,resp);
         } catch (Exception e) {
             req.setAttribute("message",e.getMessage());
-            req.getRequestDispatcher("/getProduct.jsp").forward(req,resp);
+            req.getRequestDispatcher(Path.GET_PRODUCT).forward(req,resp);
         }
     }
 }

@@ -6,6 +6,7 @@ import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -37,10 +38,10 @@ public class updateProductServlet extends HttpServlet {
         try {
             productService.updateProduct(product);
             req.setAttribute("id",id);
-            req.getRequestDispatcher("/updateProduct.jsp").forward(req,resp);
+            req.getRequestDispatcher(Path.UPDATE_PRODUCT).forward(req,resp);
         } catch (Exception e) {
             req.setAttribute("message",e.getMessage());
-            req.getRequestDispatcher("/updateProduct.jsp").forward(req,resp);
+            req.getRequestDispatcher(Path.UPDATE_PRODUCT).forward(req,resp);
         }
     }
 }

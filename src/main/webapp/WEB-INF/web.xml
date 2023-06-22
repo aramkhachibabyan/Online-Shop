@@ -41,7 +41,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>deleteAccauntServlet</servlet-name>
-    <url-pattern>/deleteAccaunt</url-pattern>
+    <url-pattern>/secure/deleteAccaunt</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -50,7 +50,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>changePasswordServlet</servlet-name>
-    <url-pattern>/changePassword</url-pattern>
+    <url-pattern>/secure/changePassword</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -59,7 +59,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>productListServlet</servlet-name>
-    <url-pattern>/productList</url-pattern>
+    <url-pattern>/secure/productList</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -68,7 +68,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>createProductServlet</servlet-name>
-    <url-pattern>/createProduct</url-pattern>
+    <url-pattern>/secure/createProduct</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -77,7 +77,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>updateProductServlet</servlet-name>
-    <url-pattern>/updateProduct</url-pattern>
+    <url-pattern>/secure/updateProduct</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -86,7 +86,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>deleteProductServlet</servlet-name>
-    <url-pattern>/deleteProduct</url-pattern>
+    <url-pattern>/secure/deleteProduct</url-pattern>
   </servlet-mapping>
 
   <servlet>
@@ -95,10 +95,26 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>getProductServlet</servlet-name>
-    <url-pattern>/getProduct</url-pattern>
+    <url-pattern>/secure/getProduct</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>logoutServlet</servlet-name>
+    <servlet-class>am.smartCode.shop.controller.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>logoutServlet</servlet-name>
+    <url-pattern>/secure/logout</url-pattern>
+  </servlet-mapping>
 
+  <filter-mapping>
+    <filter-name>authFilter</filter-name>
+    <url-pattern>/secure/*</url-pattern>
+  </filter-mapping>
+<filter>
+  <filter-name>authFilter</filter-name>
+  <filter-class>am.smartCode.shop.filter.AuthorizationFilter</filter-class>
+</filter>
 
 
 </web-app>

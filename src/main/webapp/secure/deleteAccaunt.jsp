@@ -14,12 +14,11 @@
 
 <%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
 
-<form method="post" action="/deleteAccaunt">
-    <input type="hidden" name="email" value="<%=request.getParameter("email")%>"/><br><br>
+<form method="post" action="/secure/deleteAccaunt">
     Please verify your password: <input type="password" name="password"/><br><br>
     <input type="submit"/><br><br>
 
-    <a href="http://localhost:8080/index.jsp?email=<%=request.getParameter("email")%>">Home Page</a><br><br>
+    <a href="http://localhost:8080/secure/home.jsp">Home Page</a><br><br>
 </form>
 
 </body>
