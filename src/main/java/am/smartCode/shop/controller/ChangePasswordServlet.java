@@ -4,6 +4,7 @@ import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
@@ -16,15 +17,15 @@ import java.sql.SQLException;
 public class ChangePasswordServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = (String)req.getSession().getAttribute("email");
-        String newPassword = req.getParameter("newPassword");
-        String repeatPassword = req.getParameter("repeatPassword");
+        String email = (String)req.getSession().getAttribute(Keyword.EMAIL);
+        String newPassword = req.getParameter(Keyword.NEW_PASSWORD);
+        String repeatPassword = req.getParameter(Keyword.REPEAT_PASSWORD);
         UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
         try {
             userService.updateUser(email,newPassword,repeatPassword);
             resp.sendRedirect(Path.HOME_PAGE);
         } catch (Exception e) {
-            req.setAttribute("message",e.getMessage());
+            req.setAttribute(Keyword.MESSAGE,e.getMessage());
             req.getRequestDispatcher(Path.CHANGE_PASSWORD).forward(req,resp);
         }
     }

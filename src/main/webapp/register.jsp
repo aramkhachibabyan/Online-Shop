@@ -1,4 +1,4 @@
-<%--
+<%@ page import="am.smartCode.shop.util.constants.Keyword" %><%--
   Created by IntelliJ IDEA.
   User: Admin
   Date: 6/19/2023
@@ -13,7 +13,7 @@
   <title>Register</title>
 </head>
 <body>
-<%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
+<%= request.getAttribute(Keyword.MESSAGE) == null ? "" : request.getAttribute(Keyword.MESSAGE)%>
 
 
 <h1>Please enter your information</h1>

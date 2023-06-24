@@ -1,4 +1,4 @@
-<%--
+<%@ page import="am.smartCode.shop.util.constants.Keyword" %><%--
   Created by IntelliJ IDEA.
   User: Admin
   Date: 6/19/2023
@@ -20,8 +20,8 @@
     Home Page
 </h1>
 
-<%= request.getSession().getAttribute("email") == null ? "" : "Welcome dear " + request.getSession().getAttribute("email")%>
-
+<%= request.getSession().getAttribute(Keyword.EMAIL) == null ? "" : "Welcome dear " + request.getSession().getAttribute(Keyword.EMAIL)%>
+<br><br>
 
 
 <a href="http://localhost:8080/secure/deleteAccaunt.jsp">Delete account</a><br><br>

@@ -1,5 +1,6 @@
 <%@ page import="am.smartCode.shop.model.Product" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="am.smartCode.shop.util.constants.Keyword" %><%--
   Created by IntelliJ IDEA.
   User: Admin
   Date: 6/20/2023
@@ -20,10 +21,10 @@
 </head>
 <body>
 <a style="display: flex;justify-content: right" href="http://localhost:8080/secure/logout">Log out</a><br><br>
-<%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
+<%= request.getAttribute(Keyword.MESSAGE) == null ? "" : request.getAttribute(Keyword.MESSAGE)%>
 
 
-<% List<Product> list = (List) request.getAttribute("list");%>
+<% List<Product> list = (List) request.getAttribute(Keyword.LIST);%>
 
 <a href="http://localhost:8080/secure/createProduct.jsp">Create Product</a><br><br>
 <a href="http://localhost:8080/secure/updateProduct.jsp">Update Product</a><br><br>

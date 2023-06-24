@@ -1,4 +1,4 @@
-<%--
+<%@ page import="am.smartCode.shop.util.constants.Keyword" %><%--
   Created by IntelliJ IDEA.
   User: Admin
   Date: 6/20/2023
@@ -12,7 +12,7 @@
 </head>
 <body>
 
-<%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
+<%= request.getAttribute(Keyword.MESSAGE) == null ? "" : request.getAttribute(Keyword.MESSAGE)%>
 
 <form method="post" action="/secure/deleteAccaunt">
     Please verify your password: <input type="password" name="password"/><br><br>

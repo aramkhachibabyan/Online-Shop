@@ -5,6 +5,7 @@ import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
@@ -16,7 +17,7 @@ import java.io.IOException;
 public class deleteProductServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idstr = req.getParameter("id");
+        String idstr = req.getParameter(Keyword.ID);
         long id=0;
         try {
             id = Long.parseLong(idstr);
@@ -25,10 +26,10 @@ public class deleteProductServlet extends HttpServlet {
         ProductService productService = new ProductServiceImpl(new ProductRepositoryimpl(DatabaseConnection.getInstance()));
         try {
             productService.deleteProduct(id);
-            req.setAttribute("id",id);
+            req.setAttribute(Keyword.ID,id);
             req.getRequestDispatcher(Path.DELETE_PRODUCT).forward(req,resp);
         } catch (Exception e) {
-            req.setAttribute("message",e.getMessage());
+            req.setAttribute(Keyword.MESSAGE,e.getMessage());
             req.getRequestDispatcher(Path.DELETE_PRODUCT).forward(req,resp);
         }
     }

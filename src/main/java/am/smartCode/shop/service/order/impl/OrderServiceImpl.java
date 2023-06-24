@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
             Order order = new Order();
             order.setUserId(userId);
             order.setProductId(productId);
-            order.setCountOfProducts(count);
+            order.setCountOfProduct(count);
             order.setTotalPrice(count * product.getPrice());
             if (user.getBalance() < order.getTotalPrice()) {
                 System.out.println("You doesn't have enough balance !!!");

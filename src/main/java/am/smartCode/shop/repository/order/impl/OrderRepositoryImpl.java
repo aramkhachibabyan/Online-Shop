@@ -49,7 +49,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             );
             preparedStatement.setLong(1, order.getUserId());
             preparedStatement.setLong(2, order.getProductId());
-            preparedStatement.setInt(3, order.getCountOfProducts());
+            preparedStatement.setInt(3, order.getCountOfProduct());
             preparedStatement.setLong(4, order.getTotalPrice());
             preparedStatement.executeUpdate();
 
@@ -95,7 +95,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         order.setId(resultSet.getLong("id"));
         order.setUserId(resultSet.getLong("user_id"));
         order.setProductId(resultSet.getLong("product_id"));
-        order.setCountOfProducts(resultSet.getInt("count_of_product"));
+        order.setCountOfProduct(resultSet.getInt("count_of_product"));
         order.setTotalPrice(resultSet.getLong("total_price"));
     }
 

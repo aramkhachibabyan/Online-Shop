@@ -6,6 +6,7 @@ import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
@@ -17,16 +18,16 @@ import java.io.IOException;
 public class updateProductServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idstr = req.getParameter("id");
+        String idstr = req.getParameter(Keyword.ID);
         long id=0;
         try {
             id = Long.parseLong(idstr);
         } catch (Exception ignored) {
         }
-        String category = req.getParameter("category");
-        String name = req.getParameter("name");
-        String publishedYear = req.getParameter("publishedYear");
-        String pricestr = req.getParameter("price");
+        String category = req.getParameter(Keyword.CATEGORY);
+        String name = req.getParameter(Keyword.NAME);
+        String publishedYear = req.getParameter(Keyword.PUBLISHED_YEAR);
+        String pricestr = req.getParameter(Keyword.PRICE);
         long price=0;
         try {
             price = Long.parseLong(pricestr);

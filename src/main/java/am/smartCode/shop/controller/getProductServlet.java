@@ -6,6 +6,7 @@ import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,7 @@ public class getProductServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idstr = req.getParameter("id");
+        String idstr = req.getParameter(Keyword.ID);
         long id=0;
         try {
             id = Long.parseLong(idstr);
@@ -27,10 +28,10 @@ public class getProductServlet extends HttpServlet {
         ProductService productService = new ProductServiceImpl(new ProductRepositoryimpl(DatabaseConnection.getInstance()));
         try {
             Product product = productService.getProduct(id);
-            req.setAttribute("product",product);
+            req.setAttribute(Keyword.PRODUCT,product);
             req.getRequestDispatcher(Path.GET_PRODUCT).forward(req,resp);
         } catch (Exception e) {
-            req.setAttribute("message",e.getMessage());
+            req.setAttribute(Keyword.MESSAGE,e.getMessage());
             req.getRequestDispatcher(Path.GET_PRODUCT).forward(req,resp);
         }
     }

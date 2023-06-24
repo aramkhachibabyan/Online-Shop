@@ -1,4 +1,4 @@
-<%--
+<%@ page import="am.smartCode.shop.util.constants.Keyword" %><%--
   Created by IntelliJ IDEA.
   User: Admin
   Date: 6/19/2023
@@ -16,11 +16,12 @@
 
 <h1>Login</h1>
 
-<%= request.getAttribute("message") == null ? "" : request.getAttribute("message")%>
+<%= request.getAttribute(Keyword.MESSAGE) == null ? "" : request.getAttribute(Keyword.MESSAGE)%>
 
 <form method="post" action="/login">
-    email: <input type="text" name="email"/><br><br>
-    password: <input type="password" name="password"/><br><br>
+    Email: <input type="text" name="email"/><br><br>
+    Password: <input type="password" name="password"/><br><br>
+    Remember me: <input type="checkbox" name="rememberMe"/><br><br>
     <input type="submit"/><br><br>
 </form>
 Don't have an account? <a href="http://localhost:8080/register.jsp">Sign up</a><br><br>

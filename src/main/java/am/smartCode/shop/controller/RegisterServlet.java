@@ -6,6 +6,7 @@ import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.ServletException;
@@ -19,17 +20,17 @@ import java.sql.SQLException;
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String lastname = req.getParameter("lastname");
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-        String agestr = req.getParameter("age");
+        String name = req.getParameter(Keyword.NAME);
+        String lastname = req.getParameter(Keyword.LASTNAME);
+        String email = req.getParameter(Keyword.EMAIL);
+        String password = req.getParameter(Keyword.PASSWORD);
+        String agestr = req.getParameter(Keyword.AGE);
         int age = 0;
         try {
             age = Integer.parseInt(agestr);
         } catch (Exception ignored) {
         }
-        String balancestr = req.getParameter("balance");
+        String balancestr = req.getParameter(Keyword.BALANCE);
         long balance = 0;
         try {
             balance = Long.parseLong(balancestr);
@@ -39,10 +40,10 @@ public class RegisterServlet extends HttpServlet {
         try {
             userService.register(name, lastname, email, password, age, balance);
             HttpSession session = req.getSession();
-            session.setAttribute("email", email);
+            session.setAttribute(Keyword.EMAIL, email);
             req.getRequestDispatcher(Path.HOME_PAGE).forward(req,resp);
         } catch (Exception e) {
-            req.setAttribute("message", e.getMessage());
+            req.setAttribute(Keyword.MESSAGE, e.getMessage());
             req.getRequestDispatcher(Path.REGISTER).forward(req, resp);
         }
 

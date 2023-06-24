@@ -5,6 +5,7 @@ import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
 import am.smartCode.shop.util.DatabaseConnection;
+import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
 import org.w3c.dom.html.HTMLTableCaptionElement;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.Key;
 import java.util.List;
 
 public class productListServlet extends HttpServlet {
@@ -22,10 +24,10 @@ public class productListServlet extends HttpServlet {
         ProductService productService = new ProductServiceImpl(new ProductRepositoryimpl(DatabaseConnection.getInstance()));
         try {
             List<Product> allProducts = productService.getAllProducts();
-            req.setAttribute("list",allProducts);
+            req.setAttribute(Keyword.LIST,allProducts);
             req.getRequestDispatcher(Path.PRODUCT_PAGE).forward(req,resp);
         } catch (Exception e) {
-            req.setAttribute("message",e.getMessage());
+            req.setAttribute(Keyword.MESSAGE,e.getMessage());
             req.getRequestDispatcher(Path.PRODUCT_PAGE).forward(req,resp);
         }
     }

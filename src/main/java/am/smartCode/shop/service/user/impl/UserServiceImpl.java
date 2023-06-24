@@ -7,6 +7,8 @@ import am.smartCode.shop.model.User;
 import am.smartCode.shop.repository.user.UserRepository;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.util.constants.Message;
+import am.smartCode.shop.util.encoder.MD5Encoder;
+import org.postgresql.util.MD5Digest;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -35,12 +37,11 @@ public class UserServiceImpl implements UserService {
             user.setName(name);
             user.setLastname(lastname);
             user.setEmail(email);
-            user.setPassword(password);
+            user.setPassword(MD5Encoder.encode(password));
             user.setAge(age);
             user.setBalance(balance);
             userRepository.create(user);
             connection.commit();
-            System.out.println(email + " registration successfully");
         } catch (Exception e) {
             connection.rollback();
             connection.setAutoCommit(true);
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new UserNotFoundException(Message.USER_NOT_FOUND);
         }
-        if (!Objects.equals(user.getPassword(), password)) {
+        if (!Objects.equals(user.getPassword(), MD5Encoder.encode(password))) {
             throw new ValidationException(Message.INVALID_PASSWORD);
         }
     }
@@ -94,7 +95,7 @@ public class UserServiceImpl implements UserService {
         Connection connection = userRepository.getConnection();
         connection.setAutoCommit(false);
         try {
-            userRepository.updateByEmail(email, newPassword);
+            userRepository.updateByEmail(email, MD5Encoder.encode(newPassword));
             connection.commit();
         } catch (Exception e) {
             connection.rollback();

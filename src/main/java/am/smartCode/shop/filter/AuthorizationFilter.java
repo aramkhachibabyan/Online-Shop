@@ -1,5 +1,6 @@
 package am.smartCode.shop.filter;
 
+import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
 
 import javax.servlet.*;
@@ -20,9 +21,9 @@ public class AuthorizationFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
-        String email =(String) httpRequest.getSession().getAttribute("email");
+        String email =(String) httpRequest.getSession().getAttribute(Keyword.EMAIL);
         if (email == null){
-            httpRequest.setAttribute("message","Please login");
+            httpRequest.setAttribute(Keyword.MESSAGE,"Please login");
             httpResponse.setStatus(401);
             httpRequest.getRequestDispatcher(Path.LOGIN).forward(httpRequest,httpResponse);
         }else {
