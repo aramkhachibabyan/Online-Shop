@@ -1,9 +1,11 @@
 package am.smartCode.shop.controller;
 
 import am.smartCode.shop.model.Product;
+import am.smartCode.shop.repository.product.impl.ProductRepositoryJpaImpl;
 import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.service.product.impl.ProductServiceImpl;
+import am.smartCode.shop.service.product.impl.ProductServiceJpaImpl;
 import am.smartCode.shop.util.DatabaseConnection;
 import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
@@ -21,7 +23,7 @@ public class productListServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ProductService productService = new ProductServiceImpl(new ProductRepositoryimpl(DatabaseConnection.getInstance()));
+        ProductService productService = new ProductServiceJpaImpl(new ProductRepositoryJpaImpl());
         try {
             List<Product> allProducts = productService.getAllProducts();
             req.setAttribute(Keyword.LIST,allProducts);

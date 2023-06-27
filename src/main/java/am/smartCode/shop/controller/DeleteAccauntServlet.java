@@ -1,8 +1,10 @@
 package am.smartCode.shop.controller;
 
 import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
+import am.smartCode.shop.repository.user.impl.UserRepositoryJpaImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
+import am.smartCode.shop.service.user.impl.UserServiceJpaImpl;
 import am.smartCode.shop.util.CookieUtil;
 import am.smartCode.shop.util.DatabaseConnection;
 import am.smartCode.shop.util.constants.Keyword;
@@ -21,7 +23,7 @@ public class DeleteAccauntServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = (String) req.getSession().getAttribute(Keyword.EMAIL);
         String password = req.getParameter(Keyword.PASSWORD);
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
+        UserService userService = new UserServiceJpaImpl(new UserRepositoryJpaImpl());
         try {
             userService.deleteUser(email, password);
             Cookie remember = CookieUtil.getCookieByName(req.getCookies(), Keyword.REMEMBER);

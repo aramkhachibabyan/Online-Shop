@@ -21,10 +21,6 @@ public interface UserRepository {
 
     List<User> findUsersByName(String name) throws SQLException;
 
-    void delete(String email) throws SQLException;
-
-    Connection getConnection();
-
-    void updateByEmail(String email, String password)throws SQLException;
+    void delete(long id) throws SQLException;
 
 }

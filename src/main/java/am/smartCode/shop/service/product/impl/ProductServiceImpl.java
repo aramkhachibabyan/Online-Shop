@@ -5,6 +5,8 @@ import am.smartCode.shop.exceptions.ProductNotFoundException;
 import am.smartCode.shop.exceptions.ProductValidationException;
 import am.smartCode.shop.model.Product;
 import am.smartCode.shop.repository.product.ProductRepository;
+import am.smartCode.shop.repository.product.impl.ProductRepositoryJpaImpl;
+import am.smartCode.shop.repository.product.impl.ProductRepositoryimpl;
 import am.smartCode.shop.service.product.ProductService;
 import am.smartCode.shop.util.constants.Message;
 
@@ -14,9 +16,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class ProductServiceImpl implements ProductService {
-    private final ProductRepository productRepository;
+    private final ProductRepositoryimpl productRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepositoryimpl productRepository) {
         this.productRepository = productRepository;
     }
 
@@ -92,7 +94,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getProductsByName(String name) throws SQLException {
         Connection connection = productRepository.getConnection();
-        connection.setReadOnly(true);
         return productRepository.findProductsByName(name);
     }
 

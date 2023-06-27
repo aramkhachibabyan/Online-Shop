@@ -2,8 +2,10 @@ package am.smartCode.shop.controller;
 
 import am.smartCode.shop.repository.user.UserRepository;
 import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
+import am.smartCode.shop.repository.user.impl.UserRepositoryJpaImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
+import am.smartCode.shop.service.user.impl.UserServiceJpaImpl;
 import am.smartCode.shop.util.DatabaseConnection;
 import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
@@ -21,10 +23,10 @@ public class LoginServlet extends HttpServlet {
         String email = req.getParameter(Keyword.EMAIL);
         String password = req.getParameter(Keyword.PASSWORD);
         String rememberMe = req.getParameter(Keyword.REMEMBER_ME);
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
+        UserService userService = new UserServiceJpaImpl(new UserRepositoryJpaImpl());
         try {
             userService.login(email, password);
-            if (rememberMe != null && rememberMe.equals("on")) {
+            if (rememberMe != null) {
                 Cookie cookie = new Cookie(Keyword.REMEMBER, AESManager.encrypt(email + ":" + password));
                 cookie.setMaxAge(360000);
                 resp.addCookie(cookie);

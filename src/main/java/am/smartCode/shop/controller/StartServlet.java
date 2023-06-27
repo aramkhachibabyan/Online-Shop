@@ -1,8 +1,10 @@
 package am.smartCode.shop.controller;
 
 import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
+import am.smartCode.shop.repository.user.impl.UserRepositoryJpaImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
+import am.smartCode.shop.service.user.impl.UserServiceJpaImpl;
 import am.smartCode.shop.util.CookieUtil;
 import am.smartCode.shop.util.DatabaseConnection;
 import am.smartCode.shop.util.constants.Keyword;
@@ -17,8 +19,9 @@ import java.security.Key;
 public class StartServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
         String encodedString = CookieUtil.getCookieValueByName(req.getCookies(), Keyword.REMEMBER);
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
+        UserService userService = new UserServiceJpaImpl(new UserRepositoryJpaImpl());
         try {
             if (encodedString != null) {
                 String remember = AESManager.decrypt(encodedString);
@@ -29,11 +32,10 @@ public class StartServlet extends HttpServlet {
                 cookie.setMaxAge(360000);
                 resp.addCookie(cookie);
 
-                HttpSession session = req.getSession();
+
                 session.setAttribute(Keyword.EMAIL, email);
                 req.getRequestDispatcher(Path.HOME_PAGE).forward(req, resp);
-            }
-            else {
+            } else {
                 resp.sendRedirect(Path.LOGIN);
             }
         } catch (Exception e) {

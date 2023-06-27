@@ -1,8 +1,10 @@
 package am.smartCode.shop.controller;
 
 import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
+import am.smartCode.shop.repository.user.impl.UserRepositoryJpaImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
+import am.smartCode.shop.service.user.impl.UserServiceJpaImpl;
 import am.smartCode.shop.util.DatabaseConnection;
 import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
@@ -20,7 +22,7 @@ public class ChangePasswordServlet extends HttpServlet {
         String email = (String)req.getSession().getAttribute(Keyword.EMAIL);
         String newPassword = req.getParameter(Keyword.NEW_PASSWORD);
         String repeatPassword = req.getParameter(Keyword.REPEAT_PASSWORD);
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
+        UserService userService = new UserServiceJpaImpl(new UserRepositoryJpaImpl());
         try {
             userService.updateUser(email,newPassword,repeatPassword);
             resp.sendRedirect(Path.HOME_PAGE);

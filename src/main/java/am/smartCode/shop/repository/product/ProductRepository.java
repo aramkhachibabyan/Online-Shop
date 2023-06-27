@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface ProductRepository {
 
-    Connection getConnection();
     void create(Product product) throws SQLException;
 
     void update(Product product) throws SQLException;
@@ -20,5 +19,5 @@ public interface ProductRepository {
 
     List<Product> findProductsByName(String name) throws SQLException;
 
-    void delete(Long id) throws SQLException;
+    void delete(long id) throws SQLException;
 }

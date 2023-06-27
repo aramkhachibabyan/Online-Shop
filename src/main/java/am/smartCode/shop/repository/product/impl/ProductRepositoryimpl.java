@@ -34,8 +34,6 @@ public class ProductRepositoryimpl implements ProductRepository {
 
     }
 
-
-    @Override
     public Connection getConnection() {
         return connection;
     }
@@ -113,7 +111,7 @@ public class ProductRepositoryimpl implements ProductRepository {
     }
 
     @Override
-    public void delete(Long id) throws SQLException {
+    public void delete(long id) throws SQLException {
 
         PreparedStatement preparedStatement = connection.prepareStatement("DELETE from products WHERE id = ?");
         preparedStatement.setLong(1, id);

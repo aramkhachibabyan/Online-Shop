@@ -3,8 +3,10 @@ package am.smartCode.shop.controller;
 import am.smartCode.shop.model.User;
 import am.smartCode.shop.repository.user.UserRepository;
 import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
+import am.smartCode.shop.repository.user.impl.UserRepositoryJpaImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.service.user.impl.UserServiceImpl;
+import am.smartCode.shop.service.user.impl.UserServiceJpaImpl;
 import am.smartCode.shop.util.DatabaseConnection;
 import am.smartCode.shop.util.constants.Keyword;
 import am.smartCode.shop.util.constants.Path;
@@ -36,7 +38,7 @@ public class RegisterServlet extends HttpServlet {
             balance = Long.parseLong(balancestr);
         } catch (Exception ignored) {
         }
-        UserService userService = new UserServiceImpl(new UserRepositoryImpl(DatabaseConnection.getInstance()));
+        UserService userService = new UserServiceJpaImpl(new UserRepositoryJpaImpl());
         try {
             userService.register(name, lastname, email, password, age, balance);
             HttpSession session = req.getSession();

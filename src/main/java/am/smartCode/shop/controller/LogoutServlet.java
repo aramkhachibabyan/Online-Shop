@@ -12,10 +12,11 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Cookie remember = CookieUtil.getCookieByName(req.getCookies(), Keyword.REMEMBER);
-        remember.setMaxAge(0);
-        resp.addCookie(remember);
-
+        if (remember != null) {
+            remember.setMaxAge(0);
+            resp.addCookie(remember);
+        }
         req.getSession().invalidate();
-        req.getRequestDispatcher(Path.LOGIN).forward(req, resp);
+        resp.sendRedirect(Path.LOGIN);
     }
 }

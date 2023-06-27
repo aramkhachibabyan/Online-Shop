@@ -5,6 +5,7 @@ import am.smartCode.shop.exceptions.UserNotFoundException;
 import am.smartCode.shop.exceptions.ValidationException;
 import am.smartCode.shop.model.User;
 import am.smartCode.shop.repository.user.UserRepository;
+import am.smartCode.shop.repository.user.impl.UserRepositoryImpl;
 import am.smartCode.shop.service.user.UserService;
 import am.smartCode.shop.util.constants.Message;
 import am.smartCode.shop.util.encoder.MD5Encoder;
@@ -17,9 +18,9 @@ import java.util.regex.Pattern;
 
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepositoryImpl userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepositoryImpl userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -67,12 +68,12 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(String email, String password) throws SQLException {
         Validation(email, password);
         Connection connection = userRepository.getConnection();
-        if (!userRepository.get(email).getPassword().equals(password)) {
+        if (!userRepository.get(email).getPassword().equals(MD5Encoder.encode(password))) {
             throw new ValidationException(Message.INVALID_PASSWORD);
         }
         connection.setAutoCommit(false);
         try {
-            userRepository.delete(email);
+            userRepository.delete(userRepository.get(email).getId());
             connection.commit();
         } catch (Exception e) {
             connection.rollback();
@@ -95,7 +96,9 @@ public class UserServiceImpl implements UserService {
         Connection connection = userRepository.getConnection();
         connection.setAutoCommit(false);
         try {
-            userRepository.updateByEmail(email, MD5Encoder.encode(newPassword));
+            User user = userRepository.get(email);
+            user.setPassword(newPassword);
+            userRepository.update(user);
             connection.commit();
         } catch (Exception e) {
             connection.rollback();
