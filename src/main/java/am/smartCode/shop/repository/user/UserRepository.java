@@ -10,17 +10,18 @@ import java.util.StringJoiner;
 
 public interface UserRepository {
 
-    void create(User user) throws SQLException;
+    void create(User user);
 
-    void update(User user) throws SQLException;
+    void update(User user);
 
-    User get(Long id) throws SQLException;
-    User get(String email) throws SQLException;
+    User get(Long id);
 
-    List<User> getAll() throws SQLException;
+    User get(String email);
 
-    List<User> findUsersByName(String name) throws SQLException;
+    List<User> getAll();
 
-    void delete(long id) throws SQLException;
+    List<User> findUsersByName(String name);
+
+    void delete(long id);
 
 }

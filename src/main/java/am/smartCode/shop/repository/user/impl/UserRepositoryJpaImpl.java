@@ -14,8 +14,9 @@ import java.util.List;
 
 public class UserRepositoryJpaImpl implements UserRepository {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+
     @Override
-    public void create(User user) throws SQLException {
+    public void create(User user) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.save(user);
@@ -24,7 +25,7 @@ public class UserRepositoryJpaImpl implements UserRepository {
     }
 
     @Override
-    public void update(User user) throws SQLException {
+    public void update(User user) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.update(user);
@@ -33,7 +34,7 @@ public class UserRepositoryJpaImpl implements UserRepository {
     }
 
     @Override
-    public User get(Long id) throws SQLException {
+    public User get(Long id) {
         Session session = sessionFactory.openSession();
         User user = session.get(User.class, id);
         session.close();
@@ -41,7 +42,7 @@ public class UserRepositoryJpaImpl implements UserRepository {
     }
 
     @Override
-    public User get(String email) throws SQLException {
+    public User get(String email) {
         Session session = sessionFactory.openSession();
         NativeQuery<User> nativeQuery = session.createNativeQuery(
                 "SELECT * FROM users WHERE email = :email",
@@ -56,7 +57,7 @@ public class UserRepositoryJpaImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getAll() throws SQLException {
+    public List<User> getAll() {
         Session session = sessionFactory.openSession();
         NativeQuery<User> nativeQuery = session.createNativeQuery(
                 "SELECT * FROM users",
@@ -66,7 +67,7 @@ public class UserRepositoryJpaImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findUsersByName(String name) throws SQLException {
+    public List<User> findUsersByName(String name) {
         Session session = sessionFactory.openSession();
         NativeQuery<User> nativeQuery = session.createNativeQuery(
                 "SELECT * FROM users WHERE lower(name) LIKE lower(concat('%',:name,'%'));",
@@ -77,7 +78,7 @@ public class UserRepositoryJpaImpl implements UserRepository {
     }
 
     @Override
-    public void delete(long id) throws SQLException {
+    public void delete(long id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         session.delete(get(id));
